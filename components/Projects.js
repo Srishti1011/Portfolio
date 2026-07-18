@@ -151,7 +151,7 @@ export default function Projects() {
             </p>
 
             <motion.a
-              href="#"
+              href="https://makeathon-deployed.vercel.app/"
               whileHover={{ x: 6 }}
               transition={{ duration: 0.2 }}
             >
