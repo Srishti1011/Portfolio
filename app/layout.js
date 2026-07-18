@@ -18,9 +18,9 @@ const spaceMono = Space_Mono({
 });
 
 export const metadata = {
-  title: "Zukiswa Phiri | Software Developer",
+  title: "Srishti Kaushal | Aspiring Software Developer",
   description:
-    "Portfolio of Zukiswa Phiri - Software Developer, UI Designer & Copywriter.",
+    "Portfolio of Srishti Kaushal - Aspiring Software Developer",
 };
 
 export default function RootLayout({ children }) {
