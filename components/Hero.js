@@ -8,7 +8,7 @@ import LoopArrow from "./LoopArrow";
 
 export default function Hero() {
   return (
-    <section className="pt-22 mx-auto grid max-w-6xl items-start gap-12 px-6 py-12 md:grid-cols-2">
+    <section className="pt-45 mx-auto grid max-w-6xl items-start gap-12 px-6 py-12 md:grid-cols-2">
       <motion.div
         initial="hidden"
         animate="visible"

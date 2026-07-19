@@ -1,24 +1,22 @@
 "use client";
 
 import { motion } from "framer-motion";
-
-import Stamp from "./Stamp";
-
 import { useEffect, useState } from "react";
 import Link from "next/link";
-
+import Stamp from "./Stamp";
 
 export default function Navbar() {
-
-  const [activeSection, setActiveSection] = useState("hero");
+  const [activeSection, setActiveSection] = useState("about");
+  const [showNavbar, setShowNavbar] = useState(true);
 
   const links = [
     { name: "About", href: "#about" },
-    { name: "Work", href: "#projects" },
+    { name: "Projects", href: "#projects" },
     { name: "Skills", href: "#skills" },
     { name: "Contact", href: "#contact" },
   ];
 
+  // Highlight active section
   useEffect(() => {
     const sections = document.querySelectorAll("section");
 
@@ -31,7 +29,7 @@ export default function Navbar() {
         });
       },
       {
-        threshold: 0.4,
+        threshold: 0.45,
       }
     );
 
@@ -40,67 +38,72 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, []);
 
-  <div className="flex gap-8">
-    {links.map((link) => (
-      <Link
-        key={link.href}
-        href={link.href}
-        className={`transition-colors duration-300 ${activeSection === link.href.substring(1)
-          ? "text-[#2B5D5C] font-semibold"
-          : "text-[#171310]"
-          }`}
-      >
-        {link.name}
-      </Link>
-    ))}
-  </div>
+  // Hide / reveal navbar
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
 
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      // Always show near the top
+      if (currentScrollY < 100) {
+        setShowNavbar(true);
+      } else {
+        // Hide only if user scrolls DOWN more than 10px
+        if (currentScrollY > lastScrollY + 10) {
+          setShowNavbar(false);
+        }
+
+        // Show only if user scrolls UP more than 10px
+        if (currentScrollY < lastScrollY - 10) {
+          setShowNavbar(true);
+        }
+      }
+
+      lastScrollY = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <motion.nav
-      className="mx-auto flex max-w-6xl items-center justify-between rounded-2xl px-6 py-8 shadow-[0_8px_12px_-6px_rgba(0,0,0,0.15)]"
-      initial={{ opacity: 0, y: -25 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{
-        duration: 0.6,
-        ease: "easeOut",
+      initial={{ opacity: 0, y: -40 }}
+      animate={{
+        opacity: 1,
+        y: showNavbar ? 0 : -120,
       }}
+      transition={{
+        duration: 0.35,
+        ease: "easeInOut",
+      }}
+      className="fixed top-6 left-1/2 z-50 flex w-[92%] max-w-6xl -translate-x-1/2 items-center justify-between rounded-2xl border border-black/10 bg-[#F3EEE3]/85 px-6 py-4 backdrop-blur-md shadow-lg"
     >
-
       <Stamp text="CURRENTLY BUILDING" rotate={0} />
 
-      <div className="hidden gap-8 text-sm uppercase tracking-widest md:flex">
-        <motion.a
-          href="#about"
-          whileHover={{ y: -2 }}
-          transition={{ duration: 0.2 }}
-        >
-          About
-        </motion.a>
+      <div className="hidden items-center gap-8 text-sm uppercase tracking-widest md:flex">
+        {links.map((link) => (
+          <Link
+            key={link.href}
+            href={link.href}
+            className={`relative transition-colors duration-300 ${
+              activeSection === link.href.substring(1)
+                ? "text-[#2B5D5C]"
+                : "text-[#171310]"
+            }`}
+          >
+            {link.name}
 
-        <motion.a
-          href="#projects"
-          whileHover={{ y: -2 }}
-          transition={{ duration: 0.2 }}
-        >
-          Projects
-        </motion.a>
-
-        <motion.a
-          href="#skills"
-          whileHover={{ y: -2 }}
-          transition={{ duration: 0.2 }}
-        >
-          Skills
-        </motion.a>
-
-        <motion.a
-          href="#contact"
-          whileHover={{ y: -2 }}
-          transition={{ duration: 0.2 }}
-        >
-          Contact
-        </motion.a>
+            {activeSection === link.href.substring(1) && (
+              <motion.div
+                layoutId="navbarUnderline"
+                className="absolute -bottom-1 left-0 right-0 h-[2px] bg-[#2B5D5C]"
+              />
+            )}
+          </Link>
+        ))}
       </div>
     </motion.nav>
   );
