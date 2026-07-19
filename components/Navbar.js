@@ -19,17 +19,27 @@ export default function Navbar() {
   // Highlight active section
   useEffect(() => {
     const sections = document.querySelectorAll("section");
+    const ratios = {};
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
+          ratios[entry.target.id] = entry.isIntersecting
+            ? entry.intersectionRatio
+            : 0;
         });
+
+        // pick the section with the highest visible ratio
+        const mostVisible = Object.entries(ratios).reduce((a, b) =>
+          b[1] > a[1] ? b : a
+        );
+
+        if (mostVisible[1] > 0) {
+          setActiveSection(mostVisible[0]);
+        }
       },
       {
-        threshold: 0.45,
+        threshold: [0, 0.25, 0.45, 0.6, 0.75, 1],
       }
     );
 
@@ -88,11 +98,10 @@ export default function Navbar() {
           <Link
             key={link.href}
             href={link.href}
-            className={`relative transition-colors duration-300 ${
-              activeSection === link.href.substring(1)
+            className={`relative transition-colors duration-300 ${activeSection === link.href.substring(1)
                 ? "text-[#2B5D5C]"
                 : "text-[#171310]"
-            }`}
+              }`}
           >
             {link.name}
 
