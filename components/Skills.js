@@ -123,6 +123,9 @@ export default function Skills() {
     return () => window.removeEventListener("resize", measure);
   }, []);
 
+  // fewer icons for the compact mobile/tablet layout
+  const mobileIcons = floatingIcons.slice(0, 8);
+
   return (
     <section
       id="skills"
@@ -139,9 +142,8 @@ export default function Skills() {
         03 / SKILLS
       </motion.p>
 
-      {/* outer flex row: left = bar+points, right = floating icons */}
       <div className="flex flex-col gap-x-12 border-t border-black/20 pt-10 lg:flex-row">
-        {/* left block: bar + skill points, grouped together so they don't stretch full width */}
+        {/* left block: bar + skill points */}
         <div className="grid grid-cols-[auto_1fr] gap-x-12 lg:w-[55%]">
           <div ref={barRef} className="relative w-[6px] rounded-full bg-black/10">
             <motion.div
@@ -182,8 +184,8 @@ export default function Skills() {
           </div>
         </div>
 
-        {/* right block: floating icons, fixed width, guaranteed on the right */}
-        <div className="relative mt-30 hidden min-h-[400px] flex-1 lg:mt-0 lg:block">
+        {/* right block: floating icons — full set on desktop */}
+        <div className="relative mt-16 hidden min-h-[400px] flex-1 lg:mt-0 lg:block">
           {floatingIcons.map((item, i) => (
             <FloatingIcon
               key={i}
@@ -191,6 +193,20 @@ export default function Skills() {
               top={item.top}
               left={item.left}
               size={item.size}
+              delay={item.delay}
+            />
+          ))}
+        </div>
+
+        {/* compact icons — mobile/tablet only, smaller area, fewer icons */}
+        <div className="relative mt-12 h-[220px] w-full sm:h-[260px] lg:hidden">
+          {mobileIcons.map((item, i) => (
+            <FloatingIcon
+              key={i}
+              Icon={item.icon}
+              top={item.top}
+              left={item.left}
+              size={Math.round(item.size * 0.65)}
               delay={item.delay}
             />
           ))}

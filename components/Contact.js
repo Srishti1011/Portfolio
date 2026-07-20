@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-
 import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
 
 export default function Contact() {
@@ -14,7 +13,6 @@ export default function Contact() {
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.8 }}
     >
-
       <motion.p
         className="mb-3 font-[family-name:var(--font-space-mono)] text-sm uppercase tracking-[0.35em] text-[#2B5D5C]"
         initial={{ opacity: 0, y: 20 }}
@@ -27,7 +25,7 @@ export default function Contact() {
 
       <div className="border-t border-black/20 pt-10">
         <motion.h2
-          className="mb-6 text-5xl font-bold"
+          className="mb-6 text-4xl font-bold sm:text-5xl"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -37,7 +35,7 @@ export default function Contact() {
         </motion.h2>
 
         <motion.p
-          className="mb-25 max-w-3xl text-lg text-black/70"
+          className="mb-16 max-w-3xl text-lg text-black/70 sm:mb-25"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -47,12 +45,11 @@ export default function Contact() {
           from you.
         </motion.p>
 
-        <div className="flex items-center justify-center gap-25 mt-10">
-
+        <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-center sm:gap-16 md:gap-25 mt-10">
           <motion.a
             href="https://github.com/Srishti1011"
             target="_blank"
-            rel="noopener noreferrer"            
+            rel="noopener noreferrer"
             whileHover={{ x: 8, color: "#2B5D5C" }}
             className="flex items-center gap-2 text-xl"
             transition={{ duration: 0.2 }}
@@ -60,7 +57,7 @@ export default function Contact() {
             <FaGithub />
             GitHub
           </motion.a>
-          
+
           <motion.a
             href="mailto:srishtikaushal10@gmail.com"
             whileHover={{ x: 8, color: "#2B5D5C" }}
@@ -74,7 +71,7 @@ export default function Contact() {
           <motion.a
             href="https://www.linkedin.com/in/srishti-kaushal-5a15a837a"
             target="_blank"
-            rel="noopener noreferrer"            
+            rel="noopener noreferrer"
             whileHover={{ x: 8, color: "#2B5D5C" }}
             className="flex items-center gap-2 text-xl"
             transition={{ duration: 0.2 }}

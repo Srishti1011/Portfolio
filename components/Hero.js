@@ -1,9 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-
 import Image from "next/image";
-
 import LoopArrow from "./LoopArrow";
 
 export default function Hero() {
@@ -14,19 +12,12 @@ export default function Hero() {
         animate="visible"
         variants={{
           hidden: {},
-          visible: {
-            transition: {
-              staggerChildren: 0.2,
-            },
-          },
+          visible: { transition: { staggerChildren: 0.2 } },
         }}
       >
         <motion.p
           className="mb-8 text-sm uppercase tracking-[0.3em] text-[#2B5D5C]"
-          variants={{
-            hidden: { opacity: 0, y: 20 },
-            visible: { opacity: 1, y: 0 },
-          }}
+          variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
           transition={{ duration: 0.6 }}
         >
           Aspiring Software Developer
@@ -34,10 +25,7 @@ export default function Hero() {
 
         <motion.h1
           className="mb-6 text-6xl font-bold leading-none"
-          variants={{
-            hidden: { opacity: 0, y: 20 },
-            visible: { opacity: 1, y: 0 },
-          }}
+          variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
           transition={{ duration: 0.6 }}
         >
           Hi,
@@ -51,47 +39,41 @@ export default function Hero() {
 
         <motion.p
           className="mb-8 max-w-md text-lg leading-8 text-black/70"
-          variants={{
-            hidden: { opacity: 0, y: 20 },
-            visible: { opacity: 1, y: 0 },
-          }}
+          variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
           transition={{ duration: 0.6 }}
         >
           Building at the intersection of software and artificial intelligence.
         </motion.p>
 
-        <motion.a
-          href="#projects"
-          className="inline-block border-2 border-black px-8 py-3 transition hover:bg-black hover:text-white"
-          variants={{
-            hidden: { opacity: 0, y: 20 },
-            visible: { opacity: 1, y: 0 },
-          }}
-          transition={{ duration: 0.6 }}
-          whileHover={{
-            scale: 1.05,
-          }}
-          whileTap={{
-            scale: 0.98,
-          }}
-        >
-          View My Work
-        </motion.a>
+        {/* wrap button + arrow together in a relative container */}
+        <div className="relative inline-block mb-22 sm:mb-20 md:mb-8">
+          <motion.a
+            href="#projects"
+            className="inline-block border-2 border-black px-8 py-3 transition hover:bg-black hover:text-white"
+            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+            transition={{ duration: 0.6 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            View My Work
+          </motion.a>
+
+          {/* arrow now positioned relative to the button, not the whole section */}
+          <div className="pointer-events-none absolute top-full left-1/2 -translate-x-1/2 scale-[0.3] sm:scale-[0.35] md:scale-[0.4]">
+            <div style={{ transform: "scaleX(-1) rotate(140deg)" }}>
+              <LoopArrow />
+            </div>
+          </div>
+        </div>
       </motion.div>
 
       <motion.div
         className="flex justify-center"
         initial={{ opacity: 0, x: 60 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{
-          duration: 0.8,
-          delay: 0.4,
-        }}
+        transition={{ duration: 0.8, delay: 0.4 }}
       >
-        <motion.div
-          whileHover={{ scale: 1.03 }}
-          transition={{ duration: 0.3 }}
-        >
+        <motion.div whileHover={{ scale: 1.03 }} transition={{ duration: 0.3 }}>
           <Image
             src="/images/profile.png"
             alt="Profile"
@@ -102,17 +84,6 @@ export default function Hero() {
           />
         </motion.div>
       </motion.div>
-
-      <div className="absolute -bottom-40 left-5">
-        <div
-          style={{
-            transform: "scale(0.4) scaleX(-1) rotate(140deg)",
-          }}
-        >
-          <LoopArrow />
-        </div>
-      </div>
-
     </section>
   );
 }
