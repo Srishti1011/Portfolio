@@ -18,6 +18,27 @@ export default function Navbar() {
     { name: "Contact", href: "#contact" },
   ];
 
+  // Scroll helper
+  const handleNavigation = (href, closeMenu = false) => {
+    if (closeMenu) {
+      setMobileOpen(false);
+    }
+
+    const target = document.querySelector(href);
+
+    if (target) {
+      requestAnimationFrame(() => {
+        target.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+
+        // Keep URL hash updated
+        window.history.replaceState(null, "", href);
+      });
+    }
+  };
+
   // Highlight active section
   useEffect(() => {
     const sections = document.querySelectorAll("section");
@@ -31,18 +52,25 @@ export default function Navbar() {
             : 0;
         });
 
-        const mostVisible = Object.entries(ratios).reduce((a, b) =>
-          b[1] > a[1] ? b : a
-        );
+        const visible = Object.entries(ratios);
 
-        if (mostVisible[1] > 0) {
-          setActiveSection(mostVisible[0]);
+        if (visible.length) {
+          const mostVisible = visible.reduce((a, b) =>
+            b[1] > a[1] ? b : a
+          );
+
+          if (mostVisible[1] > 0) {
+            setActiveSection(mostVisible[0]);
+          }
         }
       },
-      { threshold: [0, 0.25, 0.45, 0.6, 0.75, 1] }
+      {
+        threshold: [0, 0.25, 0.45, 0.6, 0.75, 1],
+      }
     );
 
     sections.forEach((section) => observer.observe(section));
+
     return () => observer.disconnect();
   }, []);
 
@@ -58,8 +86,9 @@ export default function Navbar() {
       } else {
         if (currentScrollY > lastScrollY + 10) {
           setShowNavbar(false);
-          setMobileOpen(false); // close menu if user scrolls away
+          setMobileOpen(false);
         }
+
         if (currentScrollY < lastScrollY - 10) {
           setShowNavbar(true);
         }
@@ -69,6 +98,7 @@ export default function Navbar() {
     };
 
     window.addEventListener("scroll", handleScroll);
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -82,12 +112,17 @@ export default function Navbar() {
       <div className="flex items-center justify-between">
         <Stamp text="CURRENTLY BUILDING" rotate={0} />
 
-        {/* desktop links */}
+        {/* Desktop */}
         <div className="hidden items-center gap-8 text-sm uppercase tracking-widest md:flex">
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
+              scroll={false}
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavigation(link.href);
+              }}
               className={`relative transition-colors duration-300 ${
                 activeSection === link.href.substring(1)
                   ? "text-[#2B5D5C]"
@@ -95,6 +130,7 @@ export default function Navbar() {
               }`}
             >
               {link.name}
+
               {activeSection === link.href.substring(1) && (
                 <motion.div
                   layoutId="navbarUnderline"
@@ -105,7 +141,7 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* mobile hamburger toggle */}
+        {/* Mobile Toggle */}
         <button
           onClick={() => setMobileOpen((open) => !open)}
           className="md:hidden text-[#171310]"
@@ -115,7 +151,7 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* mobile dropdown menu */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -130,14 +166,25 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className={`transition-colors duration-300 ${
+                  scroll={false}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleNavigation(link.href, true);
+                  }}
+                  className={`relative w-fit pb-1 transition-colors duration-300 ${
                     activeSection === link.href.substring(1)
                       ? "text-[#2B5D5C]"
                       : "text-[#171310]"
                   }`}
                 >
                   {link.name}
+
+                  {activeSection === link.href.substring(1) && (
+                    <motion.div
+                      layoutId="mobileNavbarUnderline"
+                      className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#2B5D5C]"
+                    />
+                  )}
                 </Link>
               ))}
             </div>
