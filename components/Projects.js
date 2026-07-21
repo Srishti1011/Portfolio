@@ -44,9 +44,21 @@ function FlipCard({
         data-cursor-hover
         className={`relative w-full ${cardHeight} cursor-pointer [transform-style:preserve-3d]`}
         onClick={() => setFlipped((f) => !f)}
-        animate={{ rotateY: flipped ? 180 : 0 }}
-        transition={{ duration: 0.6, ease: "easeInOut" }}
-        whileHover={{ scale: 1.02 }}
+        animate={{
+          rotateY: flipped ? 180 : 0,
+          y: 0,
+          rotateZ: 0,
+          boxShadow: "0 10px 25px rgba(0,0,0,0.15)",
+        }}
+        whileHover={{
+          y: -8,
+          rotateZ: -0.5,
+          boxShadow: "0 24px 48px rgba(0,0,0,0.25)",
+        }}
+        transition={{
+          duration: 0.5,
+          ease: "easeOut",
+        }}
       >
         {/* FRONT — image */}
         <div
